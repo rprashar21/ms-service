@@ -30,3 +30,10 @@ id 'com.google.cloud.tools.jib' version '3.4.5'
 
 # push the docker image
 docker image push 
+
+# some docker compose commands
+start in background
+docker-compose up -d
+
+docker-compose up
+
