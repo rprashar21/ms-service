@@ -1,0 +1,13 @@
+Important Annotations
+@RestController -- The annotation is on the top of the class, this telss teh springframewrok that my methos inside this class are rest apis,
+Exposes methods as rest apis,Devs can also use @Controller @ResponseBody as an alternate
+
+@ResponseBody
+
+@ResponseEntity
+
+@ControllerAdvice
+
+@RquestEntity
+
+@RequestHeader @RequestBody

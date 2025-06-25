@@ -1,0 +1,26 @@
+services:
+  accounts:
+    image: "rondocker2191/accounts:v2"
+    container_name: accounts-ms
+    ports:
+      - 8085:8085
+    deploy:
+      resources:
+        limits:
+          memory: 770m
+    networks:
+      - anyname
+  credit-card:
+    image: "rondocker2191/credit-card-v3"
+    container_name: credit-ms
+    ports:
+      - 8089:8080
+    deploy:
+      resources:
+        limits:
+          memory: 770m
+    networks:
+      - anyname
+networks:
+  anyname:
+    driver: bridge
