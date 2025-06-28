@@ -2,7 +2,7 @@ package com.rohit.loans.controller;
 
 import com.rohit.loans.dto.LoansDto;
 import com.rohit.loans.dto.ResponseDto;
-import com.rohit.loans.service.LoansService;
+import com.rohit.loans.service.ILoansService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,19 +22,23 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class LoansController {
 
-    private final LoansService loansService;
+    private final ILoansService loansService;
 
     @PostMapping("/loans")
     public ResponseEntity<ResponseDto> createLoan(@RequestBody LoansDto loansDto) {
         loansService.createLoan(loansDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ResponseDto("Loan Created", "201",null));
+                .body(new ResponseDto("Loan Created", "201", null));
     }
 
     @GetMapping("/loans")
-    public ResponseEntity<ResponseDto> getLoans(@Valid  @RequestParam String mobileNumber) {
+    public ResponseEntity<ResponseDto> checkCreditHistory(@Valid @RequestParam String mobileNumber) {
 
-        return ResponseEntity.ok(new ResponseDto("Loan List",
-                "201",null));
+        boolean isEligible = loansService.creditHistory(mobileNumber);
+        if (isEligible) {
+            return ResponseEntity.ok(new ResponseDto("Eligible", "200", null));
+        } else {
+            return ResponseEntity.ok(new ResponseDto("Not Eligible", "", null));
+        }
     }
 }
