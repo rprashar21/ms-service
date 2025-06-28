@@ -10,10 +10,10 @@ import com.rohit.accounts.dto.ResponseDto;
 import com.rohit.accounts.service.IAccountsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,14 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @Validated // tells the cpntroller to perform validation in my controller
+@Slf4j
 public class AccountsController {
 
     IAccountsService accountsService;
 
-    @Operation(summary = "Api to create account details for a customer",description = "You can create any number of accounts")
-    @ApiResponse(responseCode = "201",description = "Http Status code")
+//    AccountsConfiguration accountsConfiguration;
+
+    @Operation(summary = "Api to create account details for a customer", description = "You can create any number of accounts")
+    @ApiResponse(responseCode = "201", description = "Http Status code")
     @PostMapping("/accounts")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
+
         accountsService.createAccount(customerDto);
         return ResponseEntity.status(CREATED)
                 .body(new ResponseDto(ACCOUNT_CREATED_SUCCESSFULLY, CREATED.toString()));

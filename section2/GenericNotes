@@ -1,0 +1,25 @@
+Added PostgreSQL service with initialization scripts
+Added health checks and dependencies
+All services wait for PostgreSQL to be healthy before starting
+
+
+Service Configurations:
+Accounts: jdbc:postgresql://postgres:5432/accounts_db
+Loans: jdbc:postgresql://postgres:5432/loans_db
+Cards: jdbc:postgresql://postgres:5432/cards_db
+
+
+# Start all services
+docker-compose up -d
+
+# Check status
+docker-compose ps
+
+# View logs
+docker-compose logs postgres
+
+Isolation: Each service has its own database
+Single Server: All databases on one PostgreSQL instance
+Data Persistence: Data survives container restarts
+Health Checks: Ensures proper startup order
+Your microservices will now connect to their respective databases on the same PostgreSQL server!

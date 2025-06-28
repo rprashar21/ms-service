@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.rohit.accounts.dto.ErrorResponseDto;
-import exception.InvalidCustomerNumber;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

@@ -12,7 +12,7 @@ import com.rohit.accounts.entity.Customer;
 import com.rohit.accounts.exception.CustomerAlreadyExistsException;
 import com.rohit.accounts.repository.AccountsRepository;
 import com.rohit.accounts.repository.CustomRepository;
-import exception.InvalidCustomerNumber;
+import com.rohit.accounts.exception.InvalidCustomerNumber;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

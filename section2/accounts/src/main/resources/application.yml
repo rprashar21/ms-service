@@ -3,18 +3,31 @@ server:
 
 spring:
     datasource:
-        driver-class-name: org.h2.Driver
-        url: jdbc:h2:mem:testDB
-        username: root
-        password: password
-    h2:
-        console:
-            enabled: true
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/accounts_db
+        username: postgres
+        password: postgres
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: update # Automatically updates the database schema based on your entity classes
-        database-platform: org.hibernate.dialect.H2Dialect
+            ddl-auto: update
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
     application:
       name:
           accounts-context
+
+accounts:
+    name: rohit
+    email: rohit@gmail.com
+    phone: 923401992192
+
+management:
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+    endpoint:
+        health:
+            probes:
+                enabled:true
