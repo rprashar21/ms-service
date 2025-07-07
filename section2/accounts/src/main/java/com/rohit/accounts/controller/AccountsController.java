@@ -11,12 +11,14 @@ import com.rohit.accounts.service.IAccountsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @Validated // tells the cpntroller to perform validation in my controller
 @Slf4j
+@CrossOrigin(origins = "http://localhost:5173")
 public class AccountsController {
 
     IAccountsService accountsService;
@@ -52,5 +55,13 @@ public class AccountsController {
     ) String mobileNumber) {
         CustomerAccountDto customerAccountDetails = accountsService.getCustomerAccountDetails(mobileNumber);
         return ResponseEntity.status(OK).body(customerAccountDetails);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<String> fetchUserDetails(@Valid @RequestParam @NotEmpty String email) {
+        if(email.contains("rohit")) {
+            return ResponseEntity.status(OK).body("User Exists");
+        }
+        return ResponseEntity.status(OK).body("Please sign up");
     }
 }

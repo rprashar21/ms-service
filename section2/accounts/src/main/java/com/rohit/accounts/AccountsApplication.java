@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Tag(
 		name = "CRUD Rest Apis",
@@ -26,6 +27,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 		)
 )
 @EnableConfigurationProperties(value = {AccountPerson.class})
+@EnableScheduling // Enable Scheduling in our app
 public class AccountsApplication {
 
 	public static void main(String[] args) {
