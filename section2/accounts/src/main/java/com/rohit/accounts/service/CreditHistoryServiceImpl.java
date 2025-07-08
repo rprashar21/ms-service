@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +39,15 @@ public class CreditHistoryServiceImpl implements ICreditHistoryService {
             externalCallForCreditHistory(phoneNumber);
         }
 
-        // return from teh cache
-        return creditHistoryCache.get();
+        // return from the cache
+        return getfromCache(phoneNumber);
+    }
+
+    private String getfromCache(String phoneNumber) {
+        if (creditHistoryCache.get() != null) {
+            return creditHistoryCache.get();
+        }
+        return externalCallForCreditHistory(phoneNumber);
     }
 
     // Optional: auto-refresh in background every 10 mins
@@ -50,15 +58,23 @@ public class CreditHistoryServiceImpl implements ICreditHistoryService {
         //  externalCallForCreditHistory();
     }
 
-    private void externalCallForCreditHistory(final String phoneNumber) {
+    private String externalCallForCreditHistory(final String phoneNumber) {
         log.info("Calling external credit history for phone number {}", phoneNumber);
         // Imagine this is a REST call to external service
-        CompletableFuture<String> creditScore = CompletableFuture.supplyAsync(this::externalCall);
+        CompletableFuture<String> creditScore = CompletableFuture
+                .supplyAsync(() -> externalCall(phoneNumber))
+                .exceptionally(ex -> {
+                    log.error("Error while external credit history for phone number {}", phoneNumber, ex);
+                    return "No Score Available";
+                });
+        // we can add here a logic that if this call fails or takes more time
         String externalResponse = creditScore.join();
 
         creditHistoryCache.set(externalResponse);
         lastUpdatedDateTime = now();
+        return externalResponse;
     }
+
 
     private boolean checkIfTimeHasElapsed() {
         if (lastUpdatedDateTime != null) {
@@ -67,8 +83,25 @@ public class CreditHistoryServiceImpl implements ICreditHistoryService {
         return false;
     }
 
-    private String externalCall() {
+    private String externalCall(String phoneNumber) {
         // simulate a external call
-        return "credit score is 800";
+
+
+        for (int i = 0; i < 5; i++) {
+            try {
+
+                String status = String.valueOf(HttpStatus.GATEWAY_TIMEOUT);
+                if (status.equals("201")) {
+                    // extract response from the external api
+                    return "credit score is " + phoneNumber;
+                }
+                Thread.sleep(1000);
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        // return "credit score is 800";
+        return "The Application is Down , please try again";
     }
 }
