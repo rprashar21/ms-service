@@ -25,7 +25,6 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class SampleUserAccountWithJPA {
 
     //  UUID primary key:

@@ -1,0 +1,26 @@
+Without a Proxy (What Fails)
+Scenario:
+
+Your CartController (singleton bean) is created at application startup.
+You @Autowired a @SessionScope bean (ShoppingCart) directly.
+But: At startup, no HTTP request/session exists, so Spring can’t create or inject the session bean.
+Result: ScopeNotActiveException
+
+[App Startup]
+|
+|-- [Singleton] CartController   <-- tries to inject --> [SessionScoped] ShoppingCart
+|                                             ^
+|                                             |
+|------------------ NO SESSION YET! ----------|
+|
+|-- Error: "Scope 'session' is not active"
+
+
+With a Proxy (How Spring Fixes It)
+At startup, Spring injects a proxy (not the real ShoppingCart) into the singleton.
+The proxy sits there, waiting.
+When an actual HTTP request/session comes in, the proxy looks up the real session bean for the current session
+
+Singleton beans are created at startup (no session/request exists).
+Session/request beans only make sense when an HTTP request or session is alive.
+The proxy “defers” the lookup until there’s a valid scope, keeping your app working correctly.

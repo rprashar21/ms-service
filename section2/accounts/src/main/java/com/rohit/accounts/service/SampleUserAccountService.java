@@ -1,5 +1,7 @@
 package com.rohit.accounts.service;
 
+import java.util.List;
+
 import com.rohit.accounts.dto.SampleUserDto;
 import com.rohit.accounts.entity.SampleUserAccountWithJPA;
 import com.rohit.accounts.repository.SampleUserAccountsRepository;
@@ -31,5 +33,12 @@ public class SampleUserAccountService {
 
         sampleUserAccountsRepository.save(sampleUserAccountWithJPA);
 
+    }
+
+    // checking The Query Paramater
+
+    public SampleUserAccountWithJPA findByUsername(String username) {
+        List<SampleUserAccountWithJPA>  users = sampleUserAccountsRepository.findUsingUserName(username);
+        return users.isEmpty() ? null : users.get(0);
     }
 }
